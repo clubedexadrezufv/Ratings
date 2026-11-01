@@ -653,6 +653,21 @@
                     width: 100%
                 }
             }
+
+                .norm-ok {
+                    color: var(--alta);
+                    font-weight: 900
+                }
+
+                .norm-part {
+                    color: var(--roxo);
+                    font-weight: 900
+                }
+
+                .norm-no {
+                    color: var(--muted);
+                    font-weight: 700
+                }
         </style>
     </head>
     <body>
@@ -666,6 +681,10 @@
                         <p class="subtitle">Classificação atual com base na edição mais recente disponível.</p>
                     </div>
                 </header>
+                <div class="toolbar" id="tabs">
+                    <button id="tabRank" class="history-btn active" type="button">Ranking de Rating</button>
+                    <button id="tabPerf" class="history-btn" type="button">Maiores performances</button>
+                </div>
                 <section class="section">
                     <div class="section-head">
                         <div>
@@ -687,6 +706,7 @@
                         <div class="history-controls">
                             <span class="history-label">Consultar situação em:</span>
                             <select id="historyTournament">
+                                <option value="2">10/26</option>
                                 <option value="1">09/26</option>
                             </select>
                             <input id="historySearch" type="search" placeholder="Pesquisar jogador no histórico" style="flex:1;min-width:220px">
@@ -714,6 +734,32 @@
                     </div>
                     <p class="note">Clique no nome de qualquer jogador para abrir o perfil completo.</p>
                 </section>
+                <section class="section" id="perfSection" hidden>
+                    <div class="section-head">
+                        <div>
+                            <h2>Maiores performances</h2>
+                            <p>Todas as performances já registradas nos torneios, da maior para a menor.</p>
+                        </div>
+                    </div>
+                    <div class="toolbar">
+                        <input id="perfSearch" type="search" placeholder="Pesquisar jogador">
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Jogador</th>
+                                    <th>Performance</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody id="perfRows"></tbody>
+                        </table>
+                        <div id="perfEmpty" class="empty" hidden>Nenhum jogador encontrado.</div>
+                    </div>
+                    <p class="note">Clique no nome de qualquer jogador para abrir o perfil completo.</p>
+                </section>
             </div>
             <section id="detailView" class="detail">
                 <button class="back" id="backBtn">← Voltar para o rating</button>
@@ -725,427 +771,535 @@
         <script>
             const data = [
                 {
-                    "name": "Laerte Dias de Carvalho",
-                    "final": 1800.0,
-                    "change": 300.0,
+                    "name": "Évisson de Sousa Tavares",
+                    "final": 1809.2,
+                    "change": 109.2,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 1
                 },
                 {
-                    "name": "Rafael Senna Carli",
-                    "final": 1750.0,
-                    "change": 250.0,
+                    "name": "Laerte Dias de Carvalho",
+                    "final": 1800.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 2
                 },
                 {
-                    "name": "Arthur Marcelo",
-                    "final": 1700.0,
-                    "change": 200.0,
+                    "name": "Enzo Rogatto",
+                    "final": 1784.5,
+                    "change": 184.5,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 3
                 },
                 {
-                    "name": "Évisson de Sousa Tavares",
-                    "final": 1700.0,
-                    "change": 200.0,
+                    "name": "Rafael Senna Carli",
+                    "final": 1774.6,
+                    "change": 24.6,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 4
                 },
                 {
-                    "name": "Heitor Pereira de Souza",
+                    "name": "Arthur Marcelo",
                     "final": 1700.0,
-                    "change": 200.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 5
                 },
                 {
-                    "name": "André Sabbadini",
+                    "name": "Heitor Pereira de Souza",
                     "final": 1700.0,
-                    "change": 200.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 6
                 },
                 {
-                    "name": "João Vithor Marques",
-                    "final": 1650.0,
-                    "change": 150.0,
+                    "name": "André Sabbadini",
+                    "final": 1700.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 7
                 },
                 {
-                    "name": "Enzo Rogatto",
-                    "final": 1600.0,
-                    "change": 100.0,
+                    "name": "Saulo Lopes Ferreira",
+                    "final": 1665.8,
+                    "change": 65.8,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 8
+                },
+                {
+                    "name": "Samuel Teixeira Silva",
+                    "final": 1648.8,
+                    "change": 148.8,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 9
+                },
+                {
+                    "name": "João Vithor Marques",
+                    "final": 1647.1,
+                    "change": -2.9,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 10
+                },
+                {
+                    "name": "Maycoln Amorim",
+                    "final": 1642.0,
+                    "change": 142.0,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 11
+                },
+                {
+                    "name": "Eric Drummond",
+                    "final": 1605.6,
+                    "change": 5.6,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 12
                 },
                 {
                     "name": "Gabriel Albernaz",
                     "final": 1600.0,
-                    "change": 100.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 9
-                },
-                {
-                    "name": "Eric Drummond",
-                    "final": 1600.0,
-                    "change": 100.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 10
-                },
-                {
-                    "name": "Caio Rodrigo",
-                    "final": 1600.0,
-                    "change": 100.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 11
-                },
-                {
-                    "name": "Diego Silva",
-                    "final": 1600.0,
-                    "change": 100.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 12
-                },
-                {
-                    "name": "Saulo Lopes Ferreira",
-                    "final": 1600.0,
-                    "change": 100.0,
-                    "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 13
                 },
                 {
-                    "name": "Adiel Viana",
+                    "name": "Caio Rodrigo",
                     "final": 1600.0,
-                    "change": 100.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 14
                 },
                 {
-                    "name": "Mariano de Almeida Gaspar",
+                    "name": "Diego Silva",
                     "final": 1600.0,
-                    "change": 100.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 15
                 },
                 {
-                    "name": "Arthur Patricio Canavarros",
-                    "final": 1600.0,
-                    "change": 100.0,
+                    "name": "Paulo Vardiero",
+                    "final": 1572.9,
+                    "change": 72.9,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 16
+                },
+                {
+                    "name": "Gustavo da Silva",
+                    "final": 1564.4,
+                    "change": 64.4,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 17
+                },
+                {
+                    "name": "Thiago Fernandes",
+                    "final": 1564.4,
+                    "change": 64.4,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 18
                 },
                 {
                     "name": "Pedro Moraes",
                     "final": 1550.0,
-                    "change": 50.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 17
+                    "rank": 19
                 },
                 {
                     "name": "João Pedro Gomes",
                     "final": 1550.0,
-                    "change": 50.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 20
+                },
+                {
+                    "name": "Luis Felipe Amaral",
+                    "final": 1545.1,
+                    "change": 45.1,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
-                    "rank": 18
+                    "lastTournament": 2,
+                    "rank": 21
+                },
+                {
+                    "name": "Arthur Patricio Canavarros",
+                    "final": 1514.4,
+                    "change": -85.6,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 22
                 },
                 {
                     "name": "Igor Coelho",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 19
+                    "rank": 23
                 },
                 {
                     "name": "Mateus Figueiredo",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 20
+                    "rank": 24
                 },
                 {
                     "name": "Mateus Meiras",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 21
+                    "rank": 25
                 },
                 {
                     "name": "Gabriel Ferreira",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 22
-                },
-                {
-                    "name": "Gustavo da Silva",
-                    "final": 1500.0,
-                    "change": 0.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 23
+                    "rank": 26
                 },
                 {
                     "name": "Marcelo Henrique Souza Netto",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 24
+                    "rank": 27
                 },
                 {
                     "name": "Caio de Souza",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 25
+                    "rank": 28
                 },
                 {
                     "name": "Luís Otávio Rocha",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 26
-                },
-                {
-                    "name": "Thiago Fernandes",
-                    "final": 1500.0,
-                    "change": 0.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 27
+                    "rank": 29
                 },
                 {
                     "name": "Gabriel Olimpio",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
-                    "rank": 28
+                    "rank": 30
                 },
                 {
                     "name": "Ana Maria Souza aguera",
                     "final": 1500.0,
                     "change": 0.0,
                     "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 29
-                },
-                {
-                    "name": "Renato Elias de Assis",
-                    "final": 1450.0,
-                    "change": -50.0,
-                    "title": "",
-                    "played": true,
-                    "lastTournament": 1,
-                    "rank": 30
-                },
-                {
-                    "name": "Gabriel Spagnol",
-                    "final": 1450.0,
-                    "change": -50.0,
-                    "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 31
                 },
                 {
-                    "name": "Rafael Barros",
-                    "final": 1450.0,
-                    "change": -50.0,
+                    "name": "Mariano de Almeida Gaspar",
+                    "final": 1496.4,
+                    "change": -103.6,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 32
                 },
                 {
-                    "name": "Renato Gimenez",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "Stanislav Gurkin",
+                    "final": 1488.5,
+                    "change": -11.5,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 33
                 },
                 {
-                    "name": "Pedro Gabriel Perusso",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "Álvaro Pereira Horta",
+                    "final": 1464.0,
+                    "change": -36.0,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 34
                 },
                 {
-                    "name": "Arthur Vilela",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "André Ribeiro",
+                    "final": 1464.0,
+                    "change": -36.0,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 35
                 },
                 {
-                    "name": "Rodrigo Gastaldo",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "Lucas Silva Delgado",
+                    "final": 1461.2,
+                    "change": -38.8,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 36
                 },
                 {
-                    "name": "Pedro Silva Francisco",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "Adiel Viana",
+                    "final": 1451.0,
+                    "change": -149.0,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 37
                 },
                 {
-                    "name": "Mariana Cristina Corrêa Silva",
-                    "final": 1400.0,
-                    "change": -100.0,
+                    "name": "Renato Elias de Assis",
+                    "final": 1450.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 38
                 },
                 {
-                    "name": "Vitor Simiquel Borges",
-                    "final": 1350.0,
-                    "change": -150.0,
+                    "name": "Gabriel Spagnol",
+                    "final": 1450.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 39
                 },
                 {
-                    "name": "Alberto Naoto",
-                    "final": 1350.0,
-                    "change": -150.0,
+                    "name": "Rafael Barros",
+                    "final": 1450.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 40
                 },
                 {
-                    "name": "Benjamim Barguil Beserra",
-                    "final": 1350.0,
-                    "change": -150.0,
+                    "name": "Benjamin Barguil Beserra",
+                    "final": 1414.7,
+                    "change": 64.7,
                     "title": "",
                     "played": true,
-                    "lastTournament": 1,
+                    "lastTournament": 2,
                     "rank": 41
                 },
                 {
-                    "name": "Henrique Amorim",
-                    "final": 1350.0,
-                    "change": -150.0,
+                    "name": "Renato Gimenez",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 42
                 },
                 {
-                    "name": "Maria Eduarda Campos",
-                    "final": 1300.0,
-                    "change": -200.0,
+                    "name": "Pedro Gabriel Perusso",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 43
                 },
                 {
-                    "name": "Augusto Rocha",
-                    "final": 1300.0,
-                    "change": -200.0,
+                    "name": "Arthur Vilela",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 44
                 },
                 {
-                    "name": "Beatriz Figueiredo Albertin",
-                    "final": 1250.0,
-                    "change": -250.0,
+                    "name": "Rodrigo Gastaldo",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 45
                 },
                 {
-                    "name": "Rafael Augusto",
-                    "final": 1250.0,
-                    "change": -250.0,
+                    "name": "Pedro Silva Francisco",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 46
                 },
                 {
-                    "name": "Amanda Pacheco",
-                    "final": 1250.0,
-                    "change": -250.0,
+                    "name": "Mariana Cristina Corrêa Silva",
+                    "final": 1400.0,
+                    "change": 0.0,
                     "title": "",
-                    "played": true,
+                    "played": false,
                     "lastTournament": 1,
                     "rank": 47
+                },
+                {
+                    "name": "Arthur Pimentel",
+                    "final": 1390.8,
+                    "change": -109.2,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 48
+                },
+                {
+                    "name": "Bernardo Diniz",
+                    "final": 1376.8,
+                    "change": -123.2,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 49
+                },
+                {
+                    "name": "Vitor Simiquel Borges",
+                    "final": 1350.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 50
+                },
+                {
+                    "name": "Alberto Naoto",
+                    "final": 1350.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 51
+                },
+                {
+                    "name": "Benjamim Barguil Beserra",
+                    "final": 1350.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 52
+                },
+                {
+                    "name": "Henrique Amorim",
+                    "final": 1350.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 53
+                },
+                {
+                    "name": "Maria Eduarda Campos",
+                    "final": 1300.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 54
+                },
+                {
+                    "name": "Augusto Rocha",
+                    "final": 1300.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 55
+                },
+                {
+                    "name": "Rafael Augusto",
+                    "final": 1250.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 56
+                },
+                {
+                    "name": "Amanda Pacheco",
+                    "final": 1250.0,
+                    "change": 0.0,
+                    "title": "",
+                    "played": false,
+                    "lastTournament": 1,
+                    "rank": 57
+                },
+                {
+                    "name": "Beatriz Figueiredo Albertin",
+                    "final": 1231.2,
+                    "change": -18.8,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 58
+                },
+                {
+                    "name": "Luiza Guimarães Fonseca",
+                    "final": 1126.8,
+                    "change": -373.2,
+                    "title": "",
+                    "played": true,
+                    "lastTournament": 2,
+                    "rank": 59
                 }
             ];
             const history = {
@@ -1573,19 +1727,555 @@
                         "lastTournament": 1,
                         "rank": 47
                     }
+                ],
+                "2": [
+                    {
+                        "name": "Évisson de Sousa Tavares",
+                        "final": 1809.2,
+                        "change": 109.2,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 1
+                    },
+                    {
+                        "name": "Laerte Dias de Carvalho",
+                        "final": 1800.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 2
+                    },
+                    {
+                        "name": "Enzo Rogatto",
+                        "final": 1784.5,
+                        "change": 184.5,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 3
+                    },
+                    {
+                        "name": "Rafael Senna Carli",
+                        "final": 1774.6,
+                        "change": 24.6,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 4
+                    },
+                    {
+                        "name": "Arthur Marcelo",
+                        "final": 1700.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 5
+                    },
+                    {
+                        "name": "Heitor Pereira de Souza",
+                        "final": 1700.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 6
+                    },
+                    {
+                        "name": "André Sabbadini",
+                        "final": 1700.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 7
+                    },
+                    {
+                        "name": "Saulo Lopes Ferreira",
+                        "final": 1665.8,
+                        "change": 65.8,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 8
+                    },
+                    {
+                        "name": "Samuel Teixeira Silva",
+                        "final": 1648.8,
+                        "change": 148.8,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 9
+                    },
+                    {
+                        "name": "João Vithor Marques",
+                        "final": 1647.1,
+                        "change": -2.9,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 10
+                    },
+                    {
+                        "name": "Maycoln Amorim",
+                        "final": 1642.0,
+                        "change": 142.0,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 11
+                    },
+                    {
+                        "name": "Eric Drummond",
+                        "final": 1605.6,
+                        "change": 5.6,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 12
+                    },
+                    {
+                        "name": "Gabriel Albernaz",
+                        "final": 1600.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 13
+                    },
+                    {
+                        "name": "Caio Rodrigo",
+                        "final": 1600.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 14
+                    },
+                    {
+                        "name": "Diego Silva",
+                        "final": 1600.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 15
+                    },
+                    {
+                        "name": "Paulo Vardiero",
+                        "final": 1572.9,
+                        "change": 72.9,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 16
+                    },
+                    {
+                        "name": "Gustavo da Silva",
+                        "final": 1564.4,
+                        "change": 64.4,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 17
+                    },
+                    {
+                        "name": "Thiago Fernandes",
+                        "final": 1564.4,
+                        "change": 64.4,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 18
+                    },
+                    {
+                        "name": "Pedro Moraes",
+                        "final": 1550.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 19
+                    },
+                    {
+                        "name": "João Pedro Gomes",
+                        "final": 1550.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 20
+                    },
+                    {
+                        "name": "Luis Felipe Amaral",
+                        "final": 1545.1,
+                        "change": 45.1,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 21
+                    },
+                    {
+                        "name": "Arthur Patricio Canavarros",
+                        "final": 1514.4,
+                        "change": -85.6,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 22
+                    },
+                    {
+                        "name": "Igor Coelho",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 23
+                    },
+                    {
+                        "name": "Mateus Figueiredo",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 24
+                    },
+                    {
+                        "name": "Mateus Meiras",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 25
+                    },
+                    {
+                        "name": "Gabriel Ferreira",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 26
+                    },
+                    {
+                        "name": "Marcelo Henrique Souza Netto",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 27
+                    },
+                    {
+                        "name": "Caio de Souza",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 28
+                    },
+                    {
+                        "name": "Luís Otávio Rocha",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 29
+                    },
+                    {
+                        "name": "Gabriel Olimpio",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 30
+                    },
+                    {
+                        "name": "Ana Maria Souza aguera",
+                        "final": 1500.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 31
+                    },
+                    {
+                        "name": "Mariano de Almeida Gaspar",
+                        "final": 1496.4,
+                        "change": -103.6,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 32
+                    },
+                    {
+                        "name": "Stanislav Gurkin",
+                        "final": 1488.5,
+                        "change": -11.5,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 33
+                    },
+                    {
+                        "name": "Álvaro Pereira Horta",
+                        "final": 1464.0,
+                        "change": -36.0,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 34
+                    },
+                    {
+                        "name": "André Ribeiro",
+                        "final": 1464.0,
+                        "change": -36.0,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 35
+                    },
+                    {
+                        "name": "Lucas Silva Delgado",
+                        "final": 1461.2,
+                        "change": -38.8,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 36
+                    },
+                    {
+                        "name": "Adiel Viana",
+                        "final": 1451.0,
+                        "change": -149.0,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 37
+                    },
+                    {
+                        "name": "Renato Elias de Assis",
+                        "final": 1450.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 38
+                    },
+                    {
+                        "name": "Gabriel Spagnol",
+                        "final": 1450.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 39
+                    },
+                    {
+                        "name": "Rafael Barros",
+                        "final": 1450.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 40
+                    },
+                    {
+                        "name": "Benjamin Barguil Beserra",
+                        "final": 1414.7,
+                        "change": 64.7,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 41
+                    },
+                    {
+                        "name": "Renato Gimenez",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 42
+                    },
+                    {
+                        "name": "Pedro Gabriel Perusso",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 43
+                    },
+                    {
+                        "name": "Arthur Vilela",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 44
+                    },
+                    {
+                        "name": "Rodrigo Gastaldo",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 45
+                    },
+                    {
+                        "name": "Pedro Silva Francisco",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 46
+                    },
+                    {
+                        "name": "Mariana Cristina Corrêa Silva",
+                        "final": 1400.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 47
+                    },
+                    {
+                        "name": "Arthur Pimentel",
+                        "final": 1390.8,
+                        "change": -109.2,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 48
+                    },
+                    {
+                        "name": "Bernardo Diniz",
+                        "final": 1376.8,
+                        "change": -123.2,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 49
+                    },
+                    {
+                        "name": "Vitor Simiquel Borges",
+                        "final": 1350.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 50
+                    },
+                    {
+                        "name": "Alberto Naoto",
+                        "final": 1350.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 51
+                    },
+                    {
+                        "name": "Benjamim Barguil Beserra",
+                        "final": 1350.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 52
+                    },
+                    {
+                        "name": "Henrique Amorim",
+                        "final": 1350.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 53
+                    },
+                    {
+                        "name": "Maria Eduarda Campos",
+                        "final": 1300.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 54
+                    },
+                    {
+                        "name": "Augusto Rocha",
+                        "final": 1300.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 55
+                    },
+                    {
+                        "name": "Rafael Augusto",
+                        "final": 1250.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 56
+                    },
+                    {
+                        "name": "Amanda Pacheco",
+                        "final": 1250.0,
+                        "change": 0.0,
+                        "title": "",
+                        "played": false,
+                        "lastTournament": 1,
+                        "rank": 57
+                    },
+                    {
+                        "name": "Beatriz Figueiredo Albertin",
+                        "final": 1231.2,
+                        "change": -18.8,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 58
+                    },
+                    {
+                        "name": "Luiza Guimarães Fonseca",
+                        "final": 1126.8,
+                        "change": -373.2,
+                        "title": "",
+                        "played": true,
+                        "lastTournament": 2,
+                        "rank": 59
+                    }
                 ]
             };
             const tournamentWins = {
                 "Laerte Dias de Carvalho": [
                     1
+                ],
+                "Évisson de Sousa Tavares": [
+                    2
                 ]
             };
             const details = {
                 "Adiel Viana": {
                     "name": "Adiel Viana",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
+                    "current": 1451.0,
+                    "currentTournament": 2,
                     "peak": 1600.0,
                     "peakTournament": 1,
                     "bestPerf": 1588.7,
@@ -1594,6 +2284,10 @@
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1451.0
                         }
                     ]
                 },
@@ -1645,6 +2339,22 @@
                         }
                     ]
                 },
+                "André Ribeiro": {
+                    "name": "André Ribeiro",
+                    "title": "",
+                    "current": 1464.0,
+                    "currentTournament": 2,
+                    "peak": 1464.0,
+                    "peakTournament": 2,
+                    "bestPerf": 1464.3,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1464.0
+                        }
+                    ]
+                },
                 "André Sabbadini": {
                     "name": "André Sabbadini",
                     "title": "",
@@ -1680,8 +2390,8 @@
                 "Arthur Patricio Canavarros": {
                     "name": "Arthur Patricio Canavarros",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
+                    "current": 1514.4,
+                    "currentTournament": 2,
                     "peak": 1600.0,
                     "peakTournament": 1,
                     "bestPerf": 1588.7,
@@ -1690,6 +2400,26 @@
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1514.4
+                        }
+                    ]
+                },
+                "Arthur Pimentel": {
+                    "name": "Arthur Pimentel",
+                    "title": "",
+                    "current": 1390.8,
+                    "currentTournament": 2,
+                    "peak": 1390.8,
+                    "peakTournament": 2,
+                    "bestPerf": 1383.6,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1390.8
                         }
                     ]
                 },
@@ -1728,8 +2458,8 @@
                 "Beatriz Figueiredo Albertin": {
                     "name": "Beatriz Figueiredo Albertin",
                     "title": "",
-                    "current": 1250.0,
-                    "currentTournament": 1,
+                    "current": 1231.2,
+                    "currentTournament": 2,
                     "peak": 1250.0,
                     "peakTournament": 1,
                     "bestPerf": 1309.2,
@@ -1738,6 +2468,10 @@
                         {
                             "t": 1,
                             "rating": 1250.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1231.2
                         }
                     ]
                 },
@@ -1754,6 +2488,38 @@
                         {
                             "t": 1,
                             "rating": 1350.0
+                        }
+                    ]
+                },
+                "Benjamin Barguil Beserra": {
+                    "name": "Benjamin Barguil Beserra",
+                    "title": "",
+                    "current": 1414.7,
+                    "currentTournament": 2,
+                    "peak": 1414.7,
+                    "peakTournament": 2,
+                    "bestPerf": 1450.0,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1414.7
+                        }
+                    ]
+                },
+                "Bernardo Diniz": {
+                    "name": "Bernardo Diniz",
+                    "title": "",
+                    "current": 1376.8,
+                    "currentTournament": 2,
+                    "peak": 1376.8,
+                    "peakTournament": 2,
+                    "bestPerf": 1346.3,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1376.8
                         }
                     ]
                 },
@@ -1808,32 +2574,40 @@
                 "Enzo Rogatto": {
                     "name": "Enzo Rogatto",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
-                    "peak": 1600.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1588.7,
-                    "bestPerfTournament": 1,
+                    "current": 1784.5,
+                    "currentTournament": 2,
+                    "peak": 1784.5,
+                    "peakTournament": 2,
+                    "bestPerf": 1925.6,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1784.5
                         }
                     ]
                 },
                 "Eric Drummond": {
                     "name": "Eric Drummond",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
-                    "peak": 1600.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1588.7,
-                    "bestPerfTournament": 1,
+                    "current": 1605.6,
+                    "currentTournament": 2,
+                    "peak": 1605.6,
+                    "peakTournament": 2,
+                    "bestPerf": 1607.1,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1605.6
                         }
                     ]
                 },
@@ -1904,16 +2678,20 @@
                 "Gustavo da Silva": {
                     "name": "Gustavo da Silva",
                     "title": "",
-                    "current": 1500.0,
-                    "currentTournament": 1,
-                    "peak": 1500.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1500.0,
-                    "bestPerfTournament": 1,
+                    "current": 1564.4,
+                    "currentTournament": 2,
+                    "peak": 1564.4,
+                    "peakTournament": 2,
+                    "bestPerf": 1592.9,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1500.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1564.4
                         }
                     ]
                 },
@@ -1984,16 +2762,20 @@
                 "João Vithor Marques": {
                     "name": "João Vithor Marques",
                     "title": "",
-                    "current": 1650.0,
-                    "currentTournament": 1,
+                    "current": 1647.1,
+                    "currentTournament": 2,
                     "peak": 1650.0,
                     "peakTournament": 1,
-                    "bestPerf": 1637.0,
-                    "bestPerfTournament": 1,
+                    "bestPerf": 1642.9,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1650.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1647.1
                         }
                     ]
                 },
@@ -2010,6 +2792,54 @@
                         {
                             "t": 1,
                             "rating": 1800.0
+                        }
+                    ]
+                },
+                "Lucas Silva Delgado": {
+                    "name": "Lucas Silva Delgado",
+                    "title": "",
+                    "current": 1461.2,
+                    "currentTournament": 2,
+                    "peak": 1461.2,
+                    "peakTournament": 2,
+                    "bestPerf": 1457.1,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1461.2
+                        }
+                    ]
+                },
+                "Luis Felipe Amaral": {
+                    "name": "Luis Felipe Amaral",
+                    "title": "",
+                    "current": 1545.1,
+                    "currentTournament": 2,
+                    "peak": 1545.1,
+                    "peakTournament": 2,
+                    "bestPerf": 1542.9,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1545.1
+                        }
+                    ]
+                },
+                "Luiza Guimarães Fonseca": {
+                    "name": "Luiza Guimarães Fonseca",
+                    "title": "",
+                    "current": 1126.8,
+                    "currentTournament": 2,
+                    "peak": 1126.8,
+                    "peakTournament": 2,
+                    "bestPerf": 1025.8,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1126.8
                         }
                     ]
                 },
@@ -2080,8 +2910,8 @@
                 "Mariano de Almeida Gaspar": {
                     "name": "Mariano de Almeida Gaspar",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
+                    "current": 1496.4,
+                    "currentTournament": 2,
                     "peak": 1600.0,
                     "peakTournament": 1,
                     "bestPerf": 1588.7,
@@ -2090,6 +2920,10 @@
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1496.4
                         }
                     ]
                 },
@@ -2122,6 +2956,38 @@
                         {
                             "t": 1,
                             "rating": 1500.0
+                        }
+                    ]
+                },
+                "Maycoln Amorim": {
+                    "name": "Maycoln Amorim",
+                    "title": "",
+                    "current": 1642.0,
+                    "currentTournament": 2,
+                    "peak": 1642.0,
+                    "peakTournament": 2,
+                    "bestPerf": 1702.1,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1642.0
+                        }
+                    ]
+                },
+                "Paulo Vardiero": {
+                    "name": "Paulo Vardiero",
+                    "title": "",
+                    "current": 1572.9,
+                    "currentTournament": 2,
+                    "peak": 1572.9,
+                    "peakTournament": 2,
+                    "bestPerf": 1578.6,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1572.9
                         }
                     ]
                 },
@@ -2208,16 +3074,20 @@
                 "Rafael Senna Carli": {
                     "name": "Rafael Senna Carli",
                     "title": "",
-                    "current": 1750.0,
-                    "currentTournament": 1,
-                    "peak": 1750.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1754.7,
-                    "bestPerfTournament": 1,
+                    "current": 1774.6,
+                    "currentTournament": 2,
+                    "peak": 1774.6,
+                    "peakTournament": 2,
+                    "bestPerf": 1790.0,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1750.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1774.6
                         }
                     ]
                 },
@@ -2269,35 +3139,75 @@
                         }
                     ]
                 },
+                "Samuel Teixeira Silva": {
+                    "name": "Samuel Teixeira Silva",
+                    "title": "",
+                    "current": 1648.8,
+                    "currentTournament": 2,
+                    "peak": 1648.8,
+                    "peakTournament": 2,
+                    "bestPerf": 1657.1,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1648.8
+                        }
+                    ]
+                },
                 "Saulo Lopes Ferreira": {
                     "name": "Saulo Lopes Ferreira",
                     "title": "",
-                    "current": 1600.0,
-                    "currentTournament": 1,
-                    "peak": 1600.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1588.7,
-                    "bestPerfTournament": 1,
+                    "current": 1665.8,
+                    "currentTournament": 2,
+                    "peak": 1665.8,
+                    "peakTournament": 2,
+                    "bestPerf": 1702.1,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1600.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1665.8
+                        }
+                    ]
+                },
+                "Stanislav Gurkin": {
+                    "name": "Stanislav Gurkin",
+                    "title": "",
+                    "current": 1488.5,
+                    "currentTournament": 2,
+                    "peak": 1488.5,
+                    "peakTournament": 2,
+                    "bestPerf": 1492.9,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1488.5
                         }
                     ]
                 },
                 "Thiago Fernandes": {
                     "name": "Thiago Fernandes",
                     "title": "",
-                    "current": 1500.0,
-                    "currentTournament": 1,
-                    "peak": 1500.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1500.0,
-                    "bestPerfTournament": 1,
+                    "current": 1564.4,
+                    "currentTournament": 2,
+                    "peak": 1564.4,
+                    "peakTournament": 2,
+                    "bestPerf": 1592.9,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1500.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1564.4
                         }
                     ]
                 },
@@ -2317,32 +3227,52 @@
                         }
                     ]
                 },
+                "Álvaro Pereira Horta": {
+                    "name": "Álvaro Pereira Horta",
+                    "title": "",
+                    "current": 1464.0,
+                    "currentTournament": 2,
+                    "peak": 1464.0,
+                    "peakTournament": 2,
+                    "bestPerf": 1464.3,
+                    "bestPerfTournament": 2,
+                    "series": [
+                        {
+                            "t": 2,
+                            "rating": 1464.0
+                        }
+                    ]
+                },
                 "Évisson de Sousa Tavares": {
                     "name": "Évisson de Sousa Tavares",
                     "title": "",
-                    "current": 1700.0,
-                    "currentTournament": 1,
-                    "peak": 1700.0,
-                    "peakTournament": 1,
-                    "bestPerf": 1690.8,
-                    "bestPerfTournament": 1,
+                    "current": 1809.2,
+                    "currentTournament": 2,
+                    "peak": 1809.2,
+                    "peakTournament": 2,
+                    "bestPerf": 1911.3,
+                    "bestPerfTournament": 2,
                     "series": [
                         {
                             "t": 1,
                             "rating": 1700.0
+                        },
+                        {
+                            "t": 2,
+                            "rating": 1809.2
                         }
                     ]
                 }
             };
             // Histórico de confrontos individuais (V-E-D), calculado a partir das partidas da planilha.
-            const headToHead = {"Adiel Viana": {"Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 1, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Alberto Naoto": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 1, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Amanda Pacheco": {"André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}}, "Ana Maria Souza aguera": {"Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "André Sabbadini": {"Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Marcelo": {"Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 1, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Patricio Canavarros": {"Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Vilela": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Augusto Rocha": {"Benjamim Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}}, "Beatriz Figueiredo Albertin": {"Henrique Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Mariana Cristina Corrêa Silva": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}}, "Benjamim Barguil Beserra": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 0, "draws": 0, "losses": 1}}, "Caio Rodrigo": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}}, "Caio de Souza": {"Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}}, "Diego Silva": {"Ana Maria Souza aguera": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Enzo Rogatto": {"André Sabbadini": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 1, "draws": 0, "losses": 0}}, "Eric Drummond": {"André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}}, "Gabriel Albernaz": {"André Sabbadini": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Gabriel Ferreira": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Gabriel Olimpio": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Alberto Naoto": {"wins": 0, "draws": 1, "losses": 0}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 0, "draws": 1, "losses": 0}}, "Gabriel Spagnol": {"Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 1, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Gustavo da Silva": {"Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}}, "Heitor Pereira de Souza": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}}, "Henrique Amorim": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamim Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 0, "draws": 0, "losses": 1}}, "Igor Coelho": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "João Pedro Gomes": {"Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 0, "draws": 1, "losses": 0}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}}, "João Vithor Marques": {"Ana Maria Souza aguera": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 1, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Laerte Dias de Carvalho": {"Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Évisson de Sousa Tavares": {"wins": 1, "draws": 0, "losses": 0}}, "Luís Otávio Rocha": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Ana Maria Souza aguera": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}}, "Marcelo Henrique Souza Netto": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Maria Eduarda Campos": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}}, "Mariana Cristina Corrêa Silva": {"Alberto Naoto": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}}, "Mariano de Almeida Gaspar": {"Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Mateus Figueiredo": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Mateus Meiras": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}}, "Pedro Gabriel Perusso": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}}, "Pedro Moraes": {"Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 1, "draws": 0, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 1, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Pedro Silva Francisco": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Augusto": {"Alberto Naoto": {"wins": 0, "draws": 0, "losses": 1}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Barros": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Olimpio": {"wins": 0, "draws": 1, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Senna Carli": {"Arthur Marcelo": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 1, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 1, "draws": 0, "losses": 0}}, "Renato Elias de Assis": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 1, "losses": 0}}, "Renato Gimenez": {"João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Rodrigo Gastaldo": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Ana Maria Souza aguera": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}}, "Saulo Lopes Ferreira": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Thiago Fernandes": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}}, "Vitor Simiquel Borges": {"Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}}, "Évisson de Sousa Tavares": {"Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 1, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}}};
+            const headToHead = {"Adiel Viana": {"André Ribeiro": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Lucas Silva Delgado": {"wins": 1, "draws": 0, "losses": 0}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Alberto Naoto": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 1, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Amanda Pacheco": {"André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}}, "Ana Maria Souza aguera": {"Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "André Ribeiro": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Benjamin Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Lucas Silva Delgado": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 1, "draws": 0, "losses": 0}, "Maycoln Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Samuel Teixeira Silva": {"wins": 0, "draws": 0, "losses": 1}}, "André Sabbadini": {"Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Marcelo": {"Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 1, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Patricio Canavarros": {"Arthur Pimentel": {"wins": 0, "draws": 1, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Bernardo Diniz": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Paulo Vardiero": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 0, "draws": 0, "losses": 1}, "Stanislav Gurkin": {"wins": 0, "draws": 0, "losses": 1}, "Álvaro Pereira Horta": {"wins": 1, "draws": 0, "losses": 0}}, "Arthur Pimentel": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 1, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamin Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Arthur Vilela": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Augusto Rocha": {"Benjamim Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}}, "Beatriz Figueiredo Albertin": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Pimentel": {"wins": 0, "draws": 0, "losses": 1}, "Bernardo Diniz": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Lucas Silva Delgado": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 0, "draws": 0, "losses": 1}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Mariana Cristina Corrêa Silva": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}}, "Benjamim Barguil Beserra": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 0, "draws": 0, "losses": 1}}, "Benjamin Barguil Beserra": {"André Ribeiro": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Pimentel": {"wins": 1, "draws": 0, "losses": 0}, "Bernardo Diniz": {"wins": 1, "draws": 0, "losses": 0}, "Lucas Silva Delgado": {"wins": 0, "draws": 0, "losses": 1}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Stanislav Gurkin": {"wins": 0, "draws": 0, "losses": 1}, "Álvaro Pereira Horta": {"wins": 0, "draws": 0, "losses": 1}}, "Bernardo Diniz": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamin Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 0, "draws": 0, "losses": 1}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}}, "Caio Rodrigo": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}}, "Caio de Souza": {"Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}}, "Diego Silva": {"Ana Maria Souza aguera": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Enzo Rogatto": {"André Sabbadini": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Pimentel": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 1, "draws": 0, "losses": 1}, "Maycoln Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 1, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 1, "draws": 0, "losses": 0}}, "Eric Drummond": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 2, "draws": 0, "losses": 0}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Lucas Silva Delgado": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Paulo Vardiero": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 0, "draws": 0, "losses": 1}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Gabriel Albernaz": {"André Sabbadini": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Gabriel Ferreira": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Gabriel Olimpio": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Alberto Naoto": {"wins": 0, "draws": 1, "losses": 0}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 0, "draws": 1, "losses": 0}}, "Gabriel Spagnol": {"Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 1, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Gustavo da Silva": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 2}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Stanislav Gurkin": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}, "Álvaro Pereira Horta": {"wins": 1, "draws": 0, "losses": 0}}, "Heitor Pereira de Souza": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}}, "Henrique Amorim": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamim Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 0, "draws": 0, "losses": 1}}, "Igor Coelho": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "João Pedro Gomes": {"Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 0, "draws": 1, "losses": 0}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}}, "João Vithor Marques": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Ana Maria Souza aguera": {"wins": 1, "draws": 0, "losses": 0}, "André Ribeiro": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Lucas Silva Delgado": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 1, "losses": 1}, "Álvaro Pereira Horta": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 2}}, "Laerte Dias de Carvalho": {"Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Évisson de Sousa Tavares": {"wins": 1, "draws": 0, "losses": 0}}, "Lucas Silva Delgado": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "André Ribeiro": {"wins": 1, "draws": 0, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Benjamin Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Luis Felipe Amaral": {"André Ribeiro": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Bernardo Diniz": {"wins": 1, "draws": 0, "losses": 0}, "Paulo Vardiero": {"wins": 0, "draws": 0, "losses": 1}, "Stanislav Gurkin": {"wins": 1, "draws": 0, "losses": 0}, "Álvaro Pereira Horta": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Luiza Guimarães Fonseca": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Pimentel": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 0, "draws": 0, "losses": 1}, "Benjamin Barguil Beserra": {"wins": 0, "draws": 0, "losses": 1}, "Bernardo Diniz": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Luís Otávio Rocha": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Ana Maria Souza aguera": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}}, "Marcelo Henrique Souza Netto": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Maria Eduarda Campos": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Heitor Pereira de Souza": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}}, "Mariana Cristina Corrêa Silva": {"Alberto Naoto": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}}, "Mariano de Almeida Gaspar": {"Arthur Pimentel": {"wins": 1, "draws": 0, "losses": 0}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Bernardo Diniz": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 1, "draws": 0, "losses": 0}, "Maycoln Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Paulo Vardiero": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 0, "draws": 0, "losses": 1}}, "Mateus Figueiredo": {"Adiel Viana": {"wins": 0, "draws": 0, "losses": 1}, "Caio de Souza": {"wins": 1, "draws": 0, "losses": 0}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "João Pedro Gomes": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Renato Elias de Assis": {"wins": 1, "draws": 0, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Mateus Meiras": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}}, "Maycoln Amorim": {"André Ribeiro": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Paulo Vardiero": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}}, "Paulo Vardiero": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Maycoln Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 1, "losses": 0}, "Álvaro Pereira Horta": {"wins": 0, "draws": 0, "losses": 1}}, "Pedro Gabriel Perusso": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 0, "draws": 0, "losses": 1}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Mariano de Almeida Gaspar": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}}, "Pedro Moraes": {"Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Olimpio": {"wins": 1, "draws": 0, "losses": 0}, "Mariana Cristina Corrêa Silva": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Meiras": {"wins": 1, "draws": 0, "losses": 0}, "Renato Elias de Assis": {"wins": 0, "draws": 1, "losses": 0}, "Rodrigo Gastaldo": {"wins": 1, "draws": 0, "losses": 0}}, "Pedro Silva Francisco": {"Arthur Vilela": {"wins": 0, "draws": 0, "losses": 1}, "Augusto Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Maria Eduarda Campos": {"wins": 1, "draws": 0, "losses": 0}, "Pedro Gabriel Perusso": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Augusto": {"Alberto Naoto": {"wins": 0, "draws": 0, "losses": 1}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Beatriz Figueiredo Albertin": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Barros": {"wins": 0, "draws": 0, "losses": 1}, "Rodrigo Gastaldo": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Barros": {"Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Olimpio": {"wins": 0, "draws": 1, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Meiras": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Silva Francisco": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Rafael Senna Carli": {"Arthur Marcelo": {"wins": 1, "draws": 0, "losses": 0}, "Enzo Rogatto": {"wins": 1, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 1, "draws": 1, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 1, "draws": 0, "losses": 0}, "Paulo Vardiero": {"wins": 0, "draws": 1, "losses": 0}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 1, "draws": 0, "losses": 0}, "Stanislav Gurkin": {"wins": 1, "draws": 0, "losses": 0}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 1, "draws": 0, "losses": 1}}, "Renato Elias de Assis": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Beatriz Figueiredo Albertin": {"wins": 1, "draws": 0, "losses": 0}, "Caio Rodrigo": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 1, "losses": 0}}, "Renato Gimenez": {"João Pedro Gomes": {"wins": 0, "draws": 0, "losses": 1}, "Luís Otávio Rocha": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Gabriel Perusso": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Vitor Simiquel Borges": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Rodrigo Gastaldo": {"Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Amanda Pacheco": {"wins": 1, "draws": 0, "losses": 0}, "Ana Maria Souza aguera": {"wins": 0, "draws": 0, "losses": 1}, "Diego Silva": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Mateus Figueiredo": {"wins": 0, "draws": 0, "losses": 1}, "Pedro Moraes": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Augusto": {"wins": 1, "draws": 0, "losses": 0}}, "Samuel Teixeira Silva": {"André Ribeiro": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Maycoln Amorim": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 1}}, "Saulo Lopes Ferreira": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "André Sabbadini": {"wins": 0, "draws": 0, "losses": 1}, "Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Ferreira": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Spagnol": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 0, "draws": 0, "losses": 1}, "Lucas Silva Delgado": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Maycoln Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Stanislav Gurkin": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}, "Évisson de Sousa Tavares": {"wins": 0, "draws": 0, "losses": 2}}, "Stanislav Gurkin": {"Arthur Patricio Canavarros": {"wins": 1, "draws": 0, "losses": 0}, "Benjamin Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}}, "Thiago Fernandes": {"Adiel Viana": {"wins": 1, "draws": 0, "losses": 0}, "Alberto Naoto": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Arthur Pimentel": {"wins": 1, "draws": 0, "losses": 0}, "Arthur Vilela": {"wins": 1, "draws": 0, "losses": 0}, "Caio de Souza": {"wins": 0, "draws": 0, "losses": 1}, "Gabriel Albernaz": {"wins": 0, "draws": 0, "losses": 1}, "Luiza Guimarães Fonseca": {"wins": 1, "draws": 0, "losses": 0}, "Marcelo Henrique Souza Netto": {"wins": 1, "draws": 0, "losses": 0}, "Mariano de Almeida Gaspar": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 0, "draws": 0, "losses": 1}, "Stanislav Gurkin": {"wins": 0, "draws": 0, "losses": 1}, "Álvaro Pereira Horta": {"wins": 0, "draws": 0, "losses": 1}}, "Vitor Simiquel Borges": {"Arthur Marcelo": {"wins": 0, "draws": 0, "losses": 1}, "Benjamim Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "Henrique Amorim": {"wins": 1, "draws": 0, "losses": 0}, "Luís Otávio Rocha": {"wins": 0, "draws": 0, "losses": 1}, "Rafael Senna Carli": {"wins": 0, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 0, "draws": 0, "losses": 1}}, "Álvaro Pereira Horta": {"Arthur Patricio Canavarros": {"wins": 0, "draws": 0, "losses": 1}, "Benjamin Barguil Beserra": {"wins": 1, "draws": 0, "losses": 0}, "Gustavo da Silva": {"wins": 0, "draws": 0, "losses": 1}, "João Vithor Marques": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 0, "draws": 0, "losses": 1}, "Paulo Vardiero": {"wins": 1, "draws": 0, "losses": 0}, "Thiago Fernandes": {"wins": 1, "draws": 0, "losses": 0}}, "Évisson de Sousa Tavares": {"Enzo Rogatto": {"wins": 0, "draws": 0, "losses": 1}, "Eric Drummond": {"wins": 1, "draws": 0, "losses": 0}, "Gabriel Albernaz": {"wins": 1, "draws": 0, "losses": 0}, "Igor Coelho": {"wins": 1, "draws": 0, "losses": 0}, "João Vithor Marques": {"wins": 2, "draws": 0, "losses": 0}, "Laerte Dias de Carvalho": {"wins": 0, "draws": 0, "losses": 1}, "Luis Felipe Amaral": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Barros": {"wins": 1, "draws": 0, "losses": 0}, "Rafael Senna Carli": {"wins": 1, "draws": 0, "losses": 1}, "Renato Gimenez": {"wins": 1, "draws": 0, "losses": 0}, "Samuel Teixeira Silva": {"wins": 1, "draws": 0, "losses": 0}, "Saulo Lopes Ferreira": {"wins": 2, "draws": 0, "losses": 0}}};
             // Estatísticas extras por jogador (colocações, sequência de vitórias, desempenho por cor), calculadas a partir da planilha.
-            const playerExtras = {"Laerte Dias de Carvalho": {"tournaments": [{"t": 1, "place": 1, "points": 7, "ri": 1500, "rf": 1800, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [3, 0, 1]}, "streak": {"n": 7, "start": [1, 2], "end": [1, 8]}}, "Rafael Senna Carli": {"tournaments": [{"t": 1, "place": 2, "points": 6.5, "ri": 1500, "rf": 1750, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [2, 1, 1]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Arthur Marcelo": {"tournaments": [{"t": 1, "place": 3, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [3, 0, 1], "b": [3, 0, 1]}, "streak": {"n": 5, "start": [1, 1], "end": [1, 5]}}, "Évisson de Sousa Tavares": {"tournaments": [{"t": 1, "place": 4, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [4, 0, 1]}, "streak": {"n": 4, "start": [1, 1], "end": [1, 4]}}, "Heitor Pereira de Souza": {"tournaments": [{"t": 1, "place": 5, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [2, 0, 2]}, "streak": {"n": 3, "start": [1, 6], "end": [1, 8]}}, "André Sabbadini": {"tournaments": [{"t": 1, "place": 6, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [3, 0, 1], "b": [3, 0, 1]}, "streak": {"n": 3, "start": [1, 1], "end": [1, 3]}}, "João Vithor Marques": {"tournaments": [{"t": 1, "place": 7, "points": 5.5, "ri": 1500, "rf": 1650, "rounds": 8}], "colors": {"w": [2, 1, 2], "b": [3, 0, 0]}, "streak": {"n": 3, "start": [1, 4], "end": [1, 6]}}, "Enzo Rogatto": {"tournaments": [{"t": 1, "place": 8, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 4, "start": [1, 1], "end": [1, 4]}}, "Gabriel Albernaz": {"tournaments": [{"t": 1, "place": 9, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [1, 0, 3]}, "streak": {"n": 3, "start": [1, 4], "end": [1, 6]}}, "Eric Drummond": {"tournaments": [{"t": 1, "place": 10, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [3, 0, 2], "b": [2, 0, 1]}, "streak": {"n": 3, "start": [1, 1], "end": [1, 3]}}, "Caio Rodrigo": {"tournaments": [{"t": 1, "place": 11, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Diego Silva": {"tournaments": [{"t": 1, "place": 12, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Saulo Lopes Ferreira": {"tournaments": [{"t": 1, "place": 13, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 3], "b": [3, 0, 0]}, "streak": {"n": 3, "start": [1, 1], "end": [1, 3]}}, "Adiel Viana": {"tournaments": [{"t": 1, "place": 14, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [3, 0, 2]}, "streak": {"n": 3, "start": [1, 4], "end": [1, 6]}}, "Mariano de Almeida Gaspar": {"tournaments": [{"t": 1, "place": 15, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Arthur Patricio Canavarros": {"tournaments": [{"t": 1, "place": 16, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Pedro Moraes": {"tournaments": [{"t": 1, "place": 17, "points": 4.5, "ri": 1500, "rf": 1550, "rounds": 8}], "colors": {"w": [1, 1, 1], "b": [3, 0, 2]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "João Pedro Gomes": {"tournaments": [{"t": 1, "place": 18, "points": 4.5, "ri": 1500, "rf": 1550, "rounds": 8}], "colors": {"w": [2, 1, 2], "b": [2, 0, 1]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "Igor Coelho": {"tournaments": [{"t": 1, "place": 19, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [3, 0, 1]}, "streak": {"n": 4, "start": [1, 2], "end": [1, 5]}}, "Mateus Figueiredo": {"tournaments": [{"t": 1, "place": 20, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [0, 0, 4], "b": [4, 0, 0]}, "streak": {"n": 2, "start": [1, 2], "end": [1, 3]}}, "Mateus Meiras": {"tournaments": [{"t": 1, "place": 21, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Gabriel Ferreira": {"tournaments": [{"t": 1, "place": 22, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 3], "b": [2, 0, 1]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "Gustavo da Silva": {"tournaments": [{"t": 1, "place": 23, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 3, "start": [1, 6], "end": [1, 8]}}, "Marcelo Henrique Souza Netto": {"tournaments": [{"t": 1, "place": 24, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Caio de Souza": {"tournaments": [{"t": 1, "place": 25, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Luís Otávio Rocha": {"tournaments": [{"t": 1, "place": 26, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [2, 0, 3]}, "streak": {"n": 2, "start": [1, 5], "end": [1, 6]}}, "Thiago Fernandes": {"tournaments": [{"t": 1, "place": 27, "points": 3, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [1, 0, 2]}, "streak": {"n": 2, "start": [1, 1], "end": [1, 2]}}, "Gabriel Olimpio": {"tournaments": [{"t": 1, "place": 28, "points": 3, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 1, 0], "b": [0, 1, 2]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Ana Maria Souza aguera": {"tournaments": [{"t": 1, "place": 29, "points": 2, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [1, 0, 1], "b": [1, 0, 1]}, "streak": {"n": 2, "start": [1, 2], "end": [1, 3]}}, "Renato Elias de Assis": {"tournaments": [{"t": 1, "place": 30, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 1, 2]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Gabriel Spagnol": {"tournaments": [{"t": 1, "place": 31, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 1, 2]}, "streak": {"n": 1, "start": [1, 7], "end": [1, 7]}}, "Rafael Barros": {"tournaments": [{"t": 1, "place": 32, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [0, 1, 2], "b": [3, 0, 2]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Renato Gimenez": {"tournaments": [{"t": 1, "place": 33, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Pedro Gabriel Perusso": {"tournaments": [{"t": 1, "place": 34, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 5], "end": [1, 6]}}, "Arthur Vilela": {"tournaments": [{"t": 1, "place": 35, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 1], "end": [1, 2]}}, "Rodrigo Gastaldo": {"tournaments": [{"t": 1, "place": 36, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Pedro Silva Francisco": {"tournaments": [{"t": 1, "place": 37, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Mariana Cristina Corrêa Silva": {"tournaments": [{"t": 1, "place": 38, "points": 1, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [1, 0, 1]}, "streak": {"n": 1, "start": [1, 2], "end": [1, 2]}}, "Vitor Simiquel Borges": {"tournaments": [{"t": 1, "place": 39, "points": 3, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [1, 0, 2]}, "streak": {"n": 1, "start": [1, 7], "end": [1, 7]}}, "Alberto Naoto": {"tournaments": [{"t": 1, "place": 40, "points": 2.5, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [0, 1, 3]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Benjamim Barguil Beserra": {"tournaments": [{"t": 1, "place": 41, "points": 2, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [1, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 1, "start": [1, 5], "end": [1, 5]}}, "Henrique Amorim": {"tournaments": [{"t": 1, "place": 42, "points": 2, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [0, 0, 4]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Maria Eduarda Campos": {"tournaments": [{"t": 1, "place": 43, "points": 1, "ri": 1500, "rf": 1300, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [0, 0, 2]}, "streak": null}, "Augusto Rocha": {"tournaments": [{"t": 1, "place": 44, "points": 0, "ri": 1500, "rf": 1300, "rounds": 8}], "colors": {"w": [0, 0, 3], "b": [0, 0, 1]}, "streak": null}, "Beatriz Figueiredo Albertin": {"tournaments": [{"t": 1, "place": 45, "points": 2, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [0, 0, 3], "b": [1, 0, 3]}, "streak": {"n": 1, "start": [1, 8], "end": [1, 8]}}, "Rafael Augusto": {"tournaments": [{"t": 1, "place": 46, "points": 2, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [0, 0, 3]}, "streak": {"n": 1, "start": [1, 5], "end": [1, 5]}}, "Amanda Pacheco": {"tournaments": [{"t": 1, "place": 47, "points": 1, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [0, 0, 3]}, "streak": null}};
+            const playerExtras = {"Évisson de Sousa Tavares": {"tournaments": [{"t": 2, "place": 1, "points": 6, "ri": 1700, "rf": 1809.2, "rounds": 7}, {"t": 1, "place": 4, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [5, 0, 2], "b": [7, 0, 1]}, "streak": {"n": 5, "start": [2, 1], "end": [2, 5]}}, "Laerte Dias de Carvalho": {"tournaments": [{"t": 1, "place": 1, "points": 7, "ri": 1500, "rf": 1800, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [3, 0, 1]}, "streak": {"n": 7, "start": [1, 2], "end": [1, 8]}}, "Enzo Rogatto": {"tournaments": [{"t": 2, "place": 2, "points": 6, "ri": 1600, "rf": 1784.5, "rounds": 7}, {"t": 1, "place": 8, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [6, 0, 2], "b": [5, 0, 2]}, "streak": {"n": 4, "start": [2, 4], "end": [2, 7]}}, "Rafael Senna Carli": {"tournaments": [{"t": 2, "place": 3, "points": 5.5, "ri": 1750, "rf": 1774.6, "rounds": 7}, {"t": 1, "place": 2, "points": 6.5, "ri": 1500, "rf": 1750, "rounds": 8}], "colors": {"w": [6, 1, 0], "b": [5, 1, 2]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Arthur Marcelo": {"tournaments": [{"t": 1, "place": 3, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [3, 0, 1], "b": [3, 0, 1]}, "streak": {"n": 5, "start": [1, 1], "end": [1, 5]}}, "Heitor Pereira de Souza": {"tournaments": [{"t": 1, "place": 5, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [2, 0, 2]}, "streak": {"n": 3, "start": [1, 6], "end": [1, 8]}}, "André Sabbadini": {"tournaments": [{"t": 1, "place": 6, "points": 6, "ri": 1500, "rf": 1700, "rounds": 8}], "colors": {"w": [3, 0, 1], "b": [3, 0, 1]}, "streak": {"n": 3, "start": [1, 1], "end": [1, 3]}}, "Saulo Lopes Ferreira": {"tournaments": [{"t": 2, "place": 4, "points": 5, "ri": 1600, "rf": 1665.8, "rounds": 7}, {"t": 1, "place": 13, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [6, 0, 3], "b": [4, 0, 2]}, "streak": {"n": 4, "start": [2, 3], "end": [2, 6]}}, "Samuel Teixeira Silva": {"tournaments": [{"t": 2, "place": 6, "points": 4, "ri": 1500, "rf": 1648.8, "rounds": 7}], "colors": {"w": [2, 0, 1], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [2, 6], "end": [2, 7]}}, "João Vithor Marques": {"tournaments": [{"t": 2, "place": 8, "points": 4, "ri": 1650, "rf": 1647.1, "rounds": 7}, {"t": 1, "place": 7, "points": 5.5, "ri": 1500, "rf": 1650, "rounds": 8}], "colors": {"w": [5, 1, 3], "b": [4, 0, 2]}, "streak": {"n": 3, "start": [2, 1], "end": [2, 3]}}, "Maycoln Amorim": {"tournaments": [{"t": 2, "place": 5, "points": 5, "ri": 1500, "rf": 1642, "rounds": 7}], "colors": {"w": [4, 0, 0], "b": [0, 0, 2]}, "streak": {"n": 3, "start": [2, 3], "end": [2, 5]}}, "Eric Drummond": {"tournaments": [{"t": 2, "place": 7, "points": 4, "ri": 1600, "rf": 1605.6, "rounds": 7}, {"t": 1, "place": 10, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [6, 0, 3], "b": [3, 0, 3]}, "streak": {"n": 3, "start": [1, 1], "end": [1, 3]}}, "Gabriel Albernaz": {"tournaments": [{"t": 1, "place": 9, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [1, 0, 3]}, "streak": {"n": 3, "start": [1, 4], "end": [1, 6]}}, "Caio Rodrigo": {"tournaments": [{"t": 1, "place": 11, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [4, 0, 0], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Diego Silva": {"tournaments": [{"t": 1, "place": 12, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Paulo Vardiero": {"tournaments": [{"t": 2, "place": 12, "points": 3.5, "ri": 1500, "rf": 1572.9, "rounds": 7}], "colors": {"w": [2, 0, 1], "b": [1, 1, 2]}, "streak": {"n": 2, "start": [2, 5], "end": [2, 6]}}, "Gustavo da Silva": {"tournaments": [{"t": 2, "place": 9, "points": 4, "ri": 1500, "rf": 1564.4, "rounds": 7}, {"t": 1, "place": 23, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [4, 0, 3], "b": [4, 0, 4]}, "streak": {"n": 3, "start": [2, 2], "end": [2, 4]}}, "Thiago Fernandes": {"tournaments": [{"t": 2, "place": 11, "points": 4, "ri": 1500, "rf": 1564.4, "rounds": 7}, {"t": 1, "place": 27, "points": 3, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [3, 0, 3], "b": [4, 0, 3]}, "streak": {"n": 2, "start": [2, 6], "end": [2, 7]}}, "Pedro Moraes": {"tournaments": [{"t": 1, "place": 17, "points": 4.5, "ri": 1500, "rf": 1550, "rounds": 8}], "colors": {"w": [1, 1, 1], "b": [3, 0, 2]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "João Pedro Gomes": {"tournaments": [{"t": 1, "place": 18, "points": 4.5, "ri": 1500, "rf": 1550, "rounds": 8}], "colors": {"w": [2, 1, 2], "b": [2, 0, 1]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "Luis Felipe Amaral": {"tournaments": [{"t": 2, "place": 10, "points": 4, "ri": 1500, "rf": 1545.1, "rounds": 7}], "colors": {"w": [1, 0, 2], "b": [3, 0, 1]}, "streak": {"n": 2, "start": [2, 4], "end": [2, 5]}}, "Arthur Patricio Canavarros": {"tournaments": [{"t": 2, "place": 13, "points": 3.5, "ri": 1600, "rf": 1514.4, "rounds": 7}, {"t": 1, "place": 16, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [3, 1, 3], "b": [5, 0, 3]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Igor Coelho": {"tournaments": [{"t": 1, "place": 19, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [3, 0, 1]}, "streak": {"n": 4, "start": [1, 2], "end": [1, 5]}}, "Mateus Figueiredo": {"tournaments": [{"t": 1, "place": 20, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [0, 0, 4], "b": [4, 0, 0]}, "streak": {"n": 2, "start": [1, 2], "end": [1, 3]}}, "Mateus Meiras": {"tournaments": [{"t": 1, "place": 21, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Gabriel Ferreira": {"tournaments": [{"t": 1, "place": 22, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 3], "b": [2, 0, 1]}, "streak": {"n": 2, "start": [1, 6], "end": [1, 7]}}, "Marcelo Henrique Souza Netto": {"tournaments": [{"t": 1, "place": 24, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Caio de Souza": {"tournaments": [{"t": 1, "place": 25, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 4, "start": [1, 3], "end": [1, 6]}}, "Luís Otávio Rocha": {"tournaments": [{"t": 1, "place": 26, "points": 4, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [2, 0, 3]}, "streak": {"n": 2, "start": [1, 5], "end": [1, 6]}}, "Gabriel Olimpio": {"tournaments": [{"t": 1, "place": 28, "points": 3, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [2, 1, 0], "b": [0, 1, 2]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Ana Maria Souza aguera": {"tournaments": [{"t": 1, "place": 29, "points": 2, "ri": 1500, "rf": 1500, "rounds": 8}], "colors": {"w": [1, 0, 1], "b": [1, 0, 1]}, "streak": {"n": 2, "start": [1, 2], "end": [1, 3]}}, "Mariano de Almeida Gaspar": {"tournaments": [{"t": 2, "place": 18, "points": 3, "ri": 1600, "rf": 1496.4, "rounds": 7}, {"t": 1, "place": 15, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [4, 0, 4], "b": [4, 0, 3]}, "streak": {"n": 2, "start": [2, 6], "end": [2, 7]}}, "Stanislav Gurkin": {"tournaments": [{"t": 2, "place": 14, "points": 3, "ri": 1500, "rf": 1488.5, "rounds": 7}], "colors": {"w": [1, 0, 3], "b": [2, 0, 1]}, "streak": {"n": 2, "start": [2, 4], "end": [2, 5]}}, "Álvaro Pereira Horta": {"tournaments": [{"t": 2, "place": 15, "points": 3, "ri": 1500, "rf": 1464, "rounds": 7}], "colors": {"w": [1, 0, 3], "b": [2, 0, 1]}, "streak": {"n": 1, "start": [2, 6], "end": [2, 6]}}, "André Ribeiro": {"tournaments": [{"t": 2, "place": 16, "points": 3, "ri": 1500, "rf": 1464, "rounds": 7}], "colors": {"w": [2, 0, 1], "b": [1, 0, 3]}, "streak": {"n": 1, "start": [2, 6], "end": [2, 6]}}, "Lucas Silva Delgado": {"tournaments": [{"t": 2, "place": 17, "points": 3, "ri": 1500, "rf": 1461.2, "rounds": 7}], "colors": {"w": [1, 0, 2], "b": [2, 0, 2]}, "streak": {"n": 1, "start": [2, 5], "end": [2, 5]}}, "Adiel Viana": {"tournaments": [{"t": 2, "place": 21, "points": 2, "ri": 1600, "rf": 1451, "rounds": 7}, {"t": 1, "place": 14, "points": 5, "ri": 1500, "rf": 1600, "rounds": 8}], "colors": {"w": [3, 0, 3], "b": [4, 0, 5]}, "streak": {"n": 3, "start": [1, 8], "end": [2, 2]}}, "Renato Elias de Assis": {"tournaments": [{"t": 1, "place": 30, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 1, 2]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Gabriel Spagnol": {"tournaments": [{"t": 1, "place": 31, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 1, 2]}, "streak": {"n": 1, "start": [1, 7], "end": [1, 7]}}, "Rafael Barros": {"tournaments": [{"t": 1, "place": 32, "points": 3.5, "ri": 1500, "rf": 1450, "rounds": 8}], "colors": {"w": [0, 1, 2], "b": [3, 0, 2]}, "streak": {"n": 2, "start": [1, 7], "end": [1, 8]}}, "Benjamin Barguil Beserra": {"tournaments": [{"t": 2, "place": 19, "points": 3, "ri": 1350, "rf": 1414.7, "rounds": 7}], "colors": {"w": [2, 0, 2], "b": [1, 0, 2]}, "streak": {"n": 1, "start": [2, 7], "end": [2, 7]}}, "Renato Gimenez": {"tournaments": [{"t": 1, "place": 33, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Pedro Gabriel Perusso": {"tournaments": [{"t": 1, "place": 34, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 5], "end": [1, 6]}}, "Arthur Vilela": {"tournaments": [{"t": 1, "place": 35, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 2, "start": [1, 1], "end": [1, 2]}}, "Rodrigo Gastaldo": {"tournaments": [{"t": 1, "place": 36, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Pedro Silva Francisco": {"tournaments": [{"t": 1, "place": 37, "points": 3, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [2, 0, 2]}, "streak": {"n": 2, "start": [1, 4], "end": [1, 5]}}, "Mariana Cristina Corrêa Silva": {"tournaments": [{"t": 1, "place": 38, "points": 1, "ri": 1500, "rf": 1400, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [1, 0, 1]}, "streak": {"n": 1, "start": [1, 2], "end": [1, 2]}}, "Arthur Pimentel": {"tournaments": [{"t": 2, "place": 20, "points": 2.5, "ri": 1500, "rf": 1390.8, "rounds": 7}], "colors": {"w": [2, 0, 2], "b": [0, 1, 2]}, "streak": {"n": 2, "start": [2, 5], "end": [2, 6]}}, "Bernardo Diniz": {"tournaments": [{"t": 2, "place": 22, "points": 2, "ri": 1500, "rf": 1376.8, "rounds": 7}], "colors": {"w": [1, 0, 2], "b": [1, 0, 2]}, "streak": {"n": 1, "start": [2, 7], "end": [2, 7]}}, "Vitor Simiquel Borges": {"tournaments": [{"t": 1, "place": 39, "points": 3, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [1, 0, 2]}, "streak": {"n": 1, "start": [1, 7], "end": [1, 7]}}, "Alberto Naoto": {"tournaments": [{"t": 1, "place": 40, "points": 2.5, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [2, 0, 2], "b": [0, 1, 3]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Benjamim Barguil Beserra": {"tournaments": [{"t": 1, "place": 41, "points": 2, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [1, 0, 2], "b": [1, 0, 3]}, "streak": {"n": 1, "start": [1, 5], "end": [1, 5]}}, "Henrique Amorim": {"tournaments": [{"t": 1, "place": 42, "points": 2, "ri": 1500, "rf": 1350, "rounds": 8}], "colors": {"w": [2, 0, 1], "b": [0, 0, 4]}, "streak": {"n": 1, "start": [1, 6], "end": [1, 6]}}, "Maria Eduarda Campos": {"tournaments": [{"t": 1, "place": 43, "points": 1, "ri": 1500, "rf": 1300, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [0, 0, 2]}, "streak": null}, "Augusto Rocha": {"tournaments": [{"t": 1, "place": 44, "points": 0, "ri": 1500, "rf": 1300, "rounds": 8}], "colors": {"w": [0, 0, 3], "b": [0, 0, 1]}, "streak": null}, "Rafael Augusto": {"tournaments": [{"t": 1, "place": 46, "points": 2, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [1, 0, 3], "b": [0, 0, 3]}, "streak": {"n": 1, "start": [1, 5], "end": [1, 5]}}, "Amanda Pacheco": {"tournaments": [{"t": 1, "place": 47, "points": 1, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [0, 0, 2], "b": [0, 0, 3]}, "streak": null}, "Beatriz Figueiredo Albertin": {"tournaments": [{"t": 2, "place": 23, "points": 1, "ri": 1250, "rf": 1231.2, "rounds": 7}, {"t": 1, "place": 45, "points": 2, "ri": 1500, "rf": 1250, "rounds": 8}], "colors": {"w": [1, 0, 5], "b": [1, 0, 7]}, "streak": {"n": 1, "start": [2, 3], "end": [2, 3]}}, "Luiza Guimarães Fonseca": {"tournaments": [{"t": 2, "place": 24, "points": 0, "ri": 1500, "rf": 1126.8, "rounds": 7}], "colors": {"w": [0, 0, 3], "b": [0, 0, 4]}, "streak": null}};
             const gameStats = {
                 "Adiel Viana": {
-                    "wins": 5,
+                    "wins": 7,
                     "draws": 0,
-                    "losses": 3
+                    "losses": 8
                 },
                 "Alberto Naoto": {
                     "wins": 2,
@@ -2359,6 +3289,11 @@
                     "draws": 0,
                     "losses": 2
                 },
+                "André Ribeiro": {
+                    "wins": 3,
+                    "draws": 0,
+                    "losses": 4
+                },
                 "André Sabbadini": {
                     "wins": 6,
                     "draws": 0,
@@ -2370,9 +3305,14 @@
                     "losses": 2
                 },
                 "Arthur Patricio Canavarros": {
-                    "wins": 5,
-                    "draws": 0,
-                    "losses": 3
+                    "wins": 8,
+                    "draws": 1,
+                    "losses": 6
+                },
+                "Arthur Pimentel": {
+                    "wins": 2,
+                    "draws": 1,
+                    "losses": 4
                 },
                 "Arthur Vilela": {
                     "wins": 3,
@@ -2385,14 +3325,24 @@
                     "losses": 4
                 },
                 "Beatriz Figueiredo Albertin": {
-                    "wins": 1,
+                    "wins": 2,
                     "draws": 0,
-                    "losses": 6
+                    "losses": 12
                 },
                 "Benjamim Barguil Beserra": {
                     "wins": 2,
                     "draws": 0,
                     "losses": 5
+                },
+                "Benjamin Barguil Beserra": {
+                    "wins": 3,
+                    "draws": 0,
+                    "losses": 4
+                },
+                "Bernardo Diniz": {
+                    "wins": 2,
+                    "draws": 0,
+                    "losses": 4
                 },
                 "Caio Rodrigo": {
                     "wins": 5,
@@ -2410,14 +3360,14 @@
                     "losses": 3
                 },
                 "Enzo Rogatto": {
-                    "wins": 5,
+                    "wins": 11,
                     "draws": 0,
-                    "losses": 3
+                    "losses": 4
                 },
                 "Eric Drummond": {
-                    "wins": 5,
+                    "wins": 9,
                     "draws": 0,
-                    "losses": 3
+                    "losses": 6
                 },
                 "Gabriel Albernaz": {
                     "wins": 5,
@@ -2440,9 +3390,9 @@
                     "losses": 4
                 },
                 "Gustavo da Silva": {
-                    "wins": 4,
+                    "wins": 8,
                     "draws": 0,
-                    "losses": 4
+                    "losses": 7
                 },
                 "Heitor Pereira de Souza": {
                     "wins": 6,
@@ -2465,14 +3415,29 @@
                     "losses": 3
                 },
                 "João Vithor Marques": {
-                    "wins": 5,
+                    "wins": 9,
                     "draws": 1,
-                    "losses": 2
+                    "losses": 5
                 },
                 "Laerte Dias de Carvalho": {
                     "wins": 7,
                     "draws": 0,
                     "losses": 1
+                },
+                "Lucas Silva Delgado": {
+                    "wins": 3,
+                    "draws": 0,
+                    "losses": 4
+                },
+                "Luis Felipe Amaral": {
+                    "wins": 4,
+                    "draws": 0,
+                    "losses": 3
+                },
+                "Luiza Guimarães Fonseca": {
+                    "wins": 0,
+                    "draws": 0,
+                    "losses": 7
                 },
                 "Luís Otávio Rocha": {
                     "wins": 4,
@@ -2495,9 +3460,9 @@
                     "losses": 3
                 },
                 "Mariano de Almeida Gaspar": {
-                    "wins": 5,
+                    "wins": 8,
                     "draws": 0,
-                    "losses": 3
+                    "losses": 7
                 },
                 "Mateus Figueiredo": {
                     "wins": 4,
@@ -2508,6 +3473,16 @@
                     "wins": 4,
                     "draws": 0,
                     "losses": 4
+                },
+                "Maycoln Amorim": {
+                    "wins": 4,
+                    "draws": 0,
+                    "losses": 2
+                },
+                "Paulo Vardiero": {
+                    "wins": 3,
+                    "draws": 1,
+                    "losses": 3
                 },
                 "Pedro Gabriel Perusso": {
                     "wins": 3,
@@ -2535,9 +3510,9 @@
                     "losses": 4
                 },
                 "Rafael Senna Carli": {
-                    "wins": 6,
-                    "draws": 1,
-                    "losses": 1
+                    "wins": 11,
+                    "draws": 2,
+                    "losses": 2
                 },
                 "Renato Elias de Assis": {
                     "wins": 3,
@@ -2554,27 +3529,399 @@
                     "draws": 0,
                     "losses": 5
                 },
-                "Saulo Lopes Ferreira": {
-                    "wins": 5,
+                "Samuel Teixeira Silva": {
+                    "wins": 4,
                     "draws": 0,
                     "losses": 3
                 },
-                "Thiago Fernandes": {
+                "Saulo Lopes Ferreira": {
+                    "wins": 10,
+                    "draws": 0,
+                    "losses": 5
+                },
+                "Stanislav Gurkin": {
                     "wins": 3,
                     "draws": 0,
-                    "losses": 3
+                    "losses": 4
+                },
+                "Thiago Fernandes": {
+                    "wins": 7,
+                    "draws": 0,
+                    "losses": 6
                 },
                 "Vitor Simiquel Borges": {
                     "wins": 2,
                     "draws": 0,
                     "losses": 5
                 },
-                "Évisson de Sousa Tavares": {
-                    "wins": 6,
+                "Álvaro Pereira Horta": {
+                    "wins": 3,
                     "draws": 0,
-                    "losses": 2
+                    "losses": 4
+                },
+                "Évisson de Sousa Tavares": {
+                    "wins": 12,
+                    "draws": 0,
+                    "losses": 3
                 }
             };
+            const performances = [
+                {
+                    "name": "Enzo Rogatto",
+                    "t": 2,
+                    "performance": 1925.6
+                },
+                {
+                    "name": "Évisson de Sousa Tavares",
+                    "t": 2,
+                    "performance": 1911.3
+                },
+                {
+                    "name": "Laerte Dias de Carvalho",
+                    "t": 1,
+                    "performance": 1838.0
+                },
+                {
+                    "name": "Rafael Senna Carli",
+                    "t": 2,
+                    "performance": 1790.0
+                },
+                {
+                    "name": "Rafael Senna Carli",
+                    "t": 1,
+                    "performance": 1754.7
+                },
+                {
+                    "name": "Maycoln Amorim",
+                    "t": 2,
+                    "performance": 1702.1
+                },
+                {
+                    "name": "Saulo Lopes Ferreira",
+                    "t": 2,
+                    "performance": 1702.1
+                },
+                {
+                    "name": "André Sabbadini",
+                    "t": 1,
+                    "performance": 1690.8
+                },
+                {
+                    "name": "Arthur Marcelo",
+                    "t": 1,
+                    "performance": 1690.8
+                },
+                {
+                    "name": "Heitor Pereira de Souza",
+                    "t": 1,
+                    "performance": 1690.8
+                },
+                {
+                    "name": "Évisson de Sousa Tavares",
+                    "t": 1,
+                    "performance": 1690.8
+                },
+                {
+                    "name": "Samuel Teixeira Silva",
+                    "t": 2,
+                    "performance": 1657.1
+                },
+                {
+                    "name": "João Vithor Marques",
+                    "t": 2,
+                    "performance": 1642.9
+                },
+                {
+                    "name": "João Vithor Marques",
+                    "t": 1,
+                    "performance": 1637.0
+                },
+                {
+                    "name": "Eric Drummond",
+                    "t": 2,
+                    "performance": 1607.1
+                },
+                {
+                    "name": "Gustavo da Silva",
+                    "t": 2,
+                    "performance": 1592.9
+                },
+                {
+                    "name": "Thiago Fernandes",
+                    "t": 2,
+                    "performance": 1592.9
+                },
+                {
+                    "name": "Adiel Viana",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Arthur Patricio Canavarros",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Caio Rodrigo",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Diego Silva",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Enzo Rogatto",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Eric Drummond",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Gabriel Albernaz",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Mariano de Almeida Gaspar",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Saulo Lopes Ferreira",
+                    "t": 1,
+                    "performance": 1588.7
+                },
+                {
+                    "name": "Paulo Vardiero",
+                    "t": 2,
+                    "performance": 1578.6
+                },
+                {
+                    "name": "João Pedro Gomes",
+                    "t": 1,
+                    "performance": 1543.7
+                },
+                {
+                    "name": "Pedro Moraes",
+                    "t": 1,
+                    "performance": 1543.7
+                },
+                {
+                    "name": "Luis Felipe Amaral",
+                    "t": 2,
+                    "performance": 1542.9
+                },
+                {
+                    "name": "Ana Maria Souza aguera",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Caio de Souza",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Gabriel Ferreira",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Gabriel Olimpio",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Gustavo da Silva",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Igor Coelho",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Luís Otávio Rocha",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Marcelo Henrique Souza Netto",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Mateus Figueiredo",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Mateus Meiras",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Thiago Fernandes",
+                    "t": 1,
+                    "performance": 1500.0
+                },
+                {
+                    "name": "Stanislav Gurkin",
+                    "t": 2,
+                    "performance": 1492.9
+                },
+                {
+                    "name": "André Ribeiro",
+                    "t": 2,
+                    "performance": 1464.3
+                },
+                {
+                    "name": "Arthur Patricio Canavarros",
+                    "t": 2,
+                    "performance": 1464.3
+                },
+                {
+                    "name": "Álvaro Pereira Horta",
+                    "t": 2,
+                    "performance": 1464.3
+                },
+                {
+                    "name": "Lucas Silva Delgado",
+                    "t": 2,
+                    "performance": 1457.1
+                },
+                {
+                    "name": "Gabriel Spagnol",
+                    "t": 1,
+                    "performance": 1456.3
+                },
+                {
+                    "name": "Rafael Barros",
+                    "t": 1,
+                    "performance": 1456.3
+                },
+                {
+                    "name": "Renato Elias de Assis",
+                    "t": 1,
+                    "performance": 1456.3
+                },
+                {
+                    "name": "Benjamin Barguil Beserra",
+                    "t": 2,
+                    "performance": 1450.0
+                },
+                {
+                    "name": "Mariano de Almeida Gaspar",
+                    "t": 2,
+                    "performance": 1450.0
+                },
+                {
+                    "name": "Arthur Vilela",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Pedro Gabriel Perusso",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Pedro Silva Francisco",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Renato Gimenez",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Rodrigo Gastaldo",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Vitor Simiquel Borges",
+                    "t": 1,
+                    "performance": 1411.3
+                },
+                {
+                    "name": "Arthur Pimentel",
+                    "t": 2,
+                    "performance": 1383.6
+                },
+                {
+                    "name": "Adiel Viana",
+                    "t": 2,
+                    "performance": 1376.5
+                },
+                {
+                    "name": "Alberto Naoto",
+                    "t": 1,
+                    "performance": 1363.0
+                },
+                {
+                    "name": "Bernardo Diniz",
+                    "t": 2,
+                    "performance": 1346.3
+                },
+                {
+                    "name": "Benjamim Barguil Beserra",
+                    "t": 1,
+                    "performance": 1340.8
+                },
+                {
+                    "name": "Henrique Amorim",
+                    "t": 1,
+                    "performance": 1340.8
+                },
+                {
+                    "name": "Beatriz Figueiredo Albertin",
+                    "t": 1,
+                    "performance": 1309.2
+                },
+                {
+                    "name": "Mariana Cristina Corrêa Silva",
+                    "t": 1,
+                    "performance": 1309.2
+                },
+                {
+                    "name": "Rafael Augusto",
+                    "t": 1,
+                    "performance": 1309.2
+                },
+                {
+                    "name": "Maria Eduarda Campos",
+                    "t": 1,
+                    "performance": 1259.2
+                },
+                {
+                    "name": "Amanda Pacheco",
+                    "t": 1,
+                    "performance": 1220.4
+                },
+                {
+                    "name": "Beatriz Figueiredo Albertin",
+                    "t": 2,
+                    "performance": 1203.0
+                },
+                {
+                    "name": "Augusto Rocha",
+                    "t": 1,
+                    "performance": 1162.0
+                },
+                {
+                    "name": "Luiza Guimarães Fonseca",
+                    "t": 2,
+                    "performance": 1025.8
+                }
+            ];
             // Rótulo de cada edição mensal (1 = 09/26). Meses seguintes são gerados automaticamente (2 = 10/26, 3 = 11/26...).
             const tournamentLabels = {
                 "1": "09/26"
@@ -2744,6 +4091,66 @@
                 const row = (label, w, b) => `<tr><td>${label}</td><td>${w}</td><td>${b}</td></tr>`;
                 return `<div class="result-chart-title">Desempenho com brancas e pretas</div><div class="table-wrap"><table class="ext-table"><thead><tr><th>Estatística</th><th>Brancas</th><th>Pretas</th></tr></thead><tbody>${row('Vitórias', c.w[0], c.b[0])}${row('Empates', c.w[1], c.b[1])}${row('Derrotas', c.w[2], c.b[2])}${row('Partidas', tot(c.w), tot(c.b))}<tr><td>Aproveitamento</td><td class="h2h-score">${perf(c.w)}</td><td class="h2h-score">${perf(c.b)}</td></tr></tbody></table></div><div class="detail-note">Aproveitamento: 1 ponto por vitória, 0,5 por empate e 0 por derrota, dividido pelo total de pontos possíveis.</div>`;
             }
+            // Normas de cada título honorífico: rating de pico mínimo, performance mínima (em edições distintas) e títulos de campeão do Torneio Mensal.
+            const titleNorms = [{
+                code: 'JM',
+                name: 'Jacaré Mestre',
+                peak: 1800,
+                perf: 1900,
+                perfCount: 2,
+                champion: 0
+            }, {
+                code: 'CM',
+                name: 'Capivara Mestre',
+                peak: 1900,
+                perf: 2000,
+                perfCount: 2,
+                champion: 0
+            }, {
+                code: 'CGM',
+                name: 'Capivara Grande Mestre',
+                peak: 2000,
+                perf: 2100,
+                perfCount: 2,
+                champion: 1
+            }];
+            function normsTable(d) {
+                const mine = performances.filter(p => p.name === d.name).map(p => p.performance);
+                const wins = (tournamentWins[d.name] || []).length;
+                const rows = titleNorms.map(n => {
+                    const peakOk = d.peak >= n.peak;
+                    const c = mine.filter(v => v >= n.perf).length;
+                    const shown = Math.min(c, n.perfCount);
+                    const perfCls = c >= n.perfCount ? 'norm-ok' : c > 0 ? 'norm-part' : 'norm-no';
+                    const champ = n.champion ? `<span class="${wins >= n.champion ? 'norm-ok' : 'norm-no'}">${wins >= n.champion ? '✓ ' : ''}${Math.min(wins, n.champion)}/${n.champion}</span>` : '—';
+                    return `<tr><td>${n.name} (${n.code})</td><td><span class="${peakOk ? 'norm-ok' : 'norm-no'}">${peakOk ? '✓ Conquistada' : 'Pendente'}</span><div class="detail-note">pico ${fmt(d.peak)} · mín. ${fmt(n.peak)}</div></td><td><span class="${perfCls}">${c >= n.perfCount ? '✓ ' : ''}${shown}/${n.perfCount} normas</span><div class="detail-note">performance mín. ${fmt(n.perf)}</div></td><td>${champ}</td></tr>`;
+                }
+                ).join('');
+                return `<div class="result-chart-title">Normas de títulos</div><div class="table-wrap"><table class="ext-table"><thead><tr><th>Título</th><th>Norma de rating</th><th>Normas de performance</th><th>Título de campeão</th></tr></thead><tbody>${rows}</tbody></table></div><div class="detail-note">Norma de rating: rating de pico mínimo. Normas de performance: cada edição com a performance mínima conta uma norma, e são necessárias 2 em edições distintas. O título é concedido pelo clube quando todos os requisitos estão cumpridos.</div>`;
+            }
+            function renderPerf() {
+                const q = (document.getElementById('perfSearch').value || '').toLowerCase().trim();
+                const rows = performances.map( (p, i) => ({
+                    ...p,
+                    rank: i + 1
+                })).filter(p => p.name.toLowerCase().includes(q));
+                document.getElementById('perfRows').innerHTML = rows.map(p => `<tr><td class="rank">${p.rank}</td><td class="name">${playerButton({
+                    name: p.name,
+                    title: (details[p.name] || {}).title
+                })}</td><td>${fmt(p.performance)}</td><td>${tLabel(p.t)}</td></tr>`).join('');
+                document.getElementById('perfEmpty').hidden = rows.length !== 0;
+            }
+            function showTab(perf) {
+                document.querySelector('#mainView > section.section').hidden = perf;
+                document.getElementById('perfSection').hidden = !perf;
+                document.getElementById('tabRank').classList.toggle('active', !perf);
+                document.getElementById('tabPerf').classList.toggle('active', perf);
+                if (perf)
+                    renderPerf();
+            }
+            document.getElementById('tabRank').addEventListener('click', () => showTab(false));
+            document.getElementById('tabPerf').addEventListener('click', () => showTab(true));
+            document.getElementById('perfSearch').addEventListener('input', renderPerf);
             function openPlayer(name) {
                 const d = details[name];
                 if (!d)
@@ -2760,6 +4167,7 @@
  <div class="stat"><div class="stat-label">Maior performance</div><div class="stat-value">${d.bestPerf === null ? '—' : fmt(d.bestPerf)}</div><div class="stat-small">${d.bestPerf === null ? 'Sem registro' : tLabel(d.bestPerfTournament)}</div></div>
  <div class="stat"><div class="stat-label">Torneios ganhos</div><div class="stat-value win-logos">${Array.from({length: (tournamentWins[d.name] || []).length}, () => '<img class="win-logo" src="' + document.querySelector('.club-logo').src + '" alt="Torneio ganho">').join('')}</div><div class="stat-small">${(tournamentWins[d.name] || []).length ? (tournamentWins[d.name] || []).map(t => tLabel(t)).join(' · ') : 'Nenhum'}</div></div>
  </div>
+ <div class="h2h-box">${normsTable(d)}</div>
  <div class="result-chart">${resultChart(d.name)}</div>
  <div class="chart-box"><div class="chart-title">Variação do rating por torneio</div>${chartSVG(d)}<div class="chart-tooltip"></div><div class="detail-note">O gráfico apresenta o rating final de cada torneio em que o jogador participou. Clique em um ponto para ver o rating exato.</div></div>
  <div class="h2h-box">${headToHeadTable(d.name)}</div>
